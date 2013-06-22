@@ -1,3 +1,11 @@
+(defpackage text-tables
+  (:use common-lisp)
+  (:nicknames txt-tbls)
+  (:export tbl-append print-table))
+
+(in-package text-tables)
+
+
 ;; table -> (title #(row) #(row) ...)
 ;; title, row -> (column, column, ... column)
 
