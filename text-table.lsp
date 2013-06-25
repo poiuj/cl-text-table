@@ -60,6 +60,7 @@
 
 
 (defun parse-file (file-name &optional (row-delimiter #\Newline) (column-delimiter #\;))
+  "creates table from text file"
   (flet ((%list-to-array (list)
            (make-array (length list)
                        :initial-contents list)))
