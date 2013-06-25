@@ -15,6 +15,7 @@
             (error "Row lengths doesn't match!"))
         row-list)))
 
+(defconstant extra-ws 2)
 
 (defun print-table (tbl &optional (delimiter #\|))
   "prints table 'tbl' with delimiter 'delimiter' to the standard output"
@@ -25,7 +26,7 @@
              (loop for element across row
                 for element-length across lengths do
                   (let* ((avail-ws (- element-length (length element)))
-                         (ws-before (round (/ avail-ws 2)))
+                         (ws-before (round (/ avail-ws extra-ws)))
                          (ws-after (- avail-ws ws-before)))
                     (loop repeat ws-before do (write-no-escape #\Space))
                     (write-no-escape element)
@@ -40,16 +41,17 @@
         (if tbl
             (let ((lengths (make-array header-length :element-type 'integer)))
               (dotimes (i (length (car tbl)))
-                ;; add whitespaces before and after: +2
+                ;; add whitespaces before and after: +extra-ws
                 (setf (aref lengths i)
-                      (+ (%find-widest-item tbl i) 2)))
+                      (+ (%find-widest-item tbl i) extra-ws)))
               
               ;; print header
               (%print-row header lengths)
               (write-no-escape #\Newline)
               
               ;; print horizontal delimiter
-              (let ((total-length (loop for x across lengths sum x)))
+              (let ((total-length (+ (loop for x across lengths sum x)
+                                     header-length)))
                 (loop repeat total-length do (write-no-escape #\=)))
               (write-no-escape #\Newline)
               
