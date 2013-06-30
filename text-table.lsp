@@ -62,45 +62,50 @@
                    (write-no-escape row-delimiter))))))))
 
 
-(defun parse-file (file-name &key (row-delimiter #\Newline) (column-delimiter #\;))
-  "creates table from text file"
+(defun parse (&key (stream *standard-input*) (row-delimiter #\Newline) (column-delimiter #\;))
+  "Reads table from the stream. Default stream is *standard-input*"
   (flet ((%list-to-array (list)
            (make-array (length list)
                        :initial-contents list)))
-
+    
     (macrolet ((read-next ()
-                 `(peek-char nil s nil)))
+                 `(peek-char nil stream nil)))
+      
+      ;;read whole table
+      (loop 
+         with table
+         while (read-next)
+         finally (return (nreverse table))
+         do
+           (push
+            ;;read row
+            (loop 
+               with row
+               until (let ((next-char (read-next)))
+                       (or (eq next-char row-delimiter)
+                           (not next-char)))
+               finally (when (eq (read-next) row-delimiter)
+                         (read-char stream nil))
+                 (return (%list-to-array (nreverse row)))
+               do
+                 (push
+                  ;;read element
+                  (loop 
+                     with element
+                     until (let ((next-char (read-next)))
+                             (or (eq next-char column-delimiter)
+                                 (eq next-char row-delimiter)
+                                 (not next-char)))
+                     finally (when (eq (read-next) column-delimiter)
+                               (read-char stream nil))
+                       (return (coerce (nreverse element) 'string))
+                     do
+                       (push (read-char stream nil) element))
+                  row))
+            table)))))
 
-      (with-open-file (s file-name)
-        ;;read whole table
-        (loop 
-           with table
-           while (read-next)
-           finally (return (nreverse table))
-           do
-             (push
-              ;;read row
-              (loop 
-                 with row
-                 until (let ((next-char (read-next)))
-                         (or (eq next-char row-delimiter)
-                             (not next-char)))
-                 finally (when (eq (read-next) row-delimiter)
-                           (read-char s nil))
-                   (return (%list-to-array (nreverse row)))
-                 do
-                   (push
-                    ;;read element
-                    (loop 
-                       with element
-                       until (let ((next-char (read-next)))
-                               (or (eq next-char column-delimiter)
-                                   (eq next-char row-delimiter)
-                                   (not next-char)))
-                       finally (when (eq (read-next) column-delimiter)
-                                 (read-char s nil))
-                         (return (coerce (nreverse element) 'string))
-                       do
-                         (push (read-char s nil) element))
-                    row))
-              table))))))
+
+(defun parse-file (file-name &rest rest)
+  "Shorthand to parse table from specified file"
+  (with-open-file (stream file-name)
+    (apply #'parse :stream stream rest)))
