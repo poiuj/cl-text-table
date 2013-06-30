@@ -3,10 +3,10 @@
 ;; table -> (title row row ... row)
 ;; title, row -> #(element element ... element)
 
-(defun tbl-append (tbl row)
-  "appends row 'row' to the table 'tbl'"
-  (declare (list tbl) 
-           (array row))
+(defun tbl-append (row tbl)
+  "Appends row to the table"
+  (declare (array row)
+           (list tbl))
   
   (let ((row-list (list row)))
     (if tbl
@@ -17,7 +17,7 @@
 
 
 (defun print-table (tbl &key (header-delimiter #\=) (column-delimiter #\|) (row-delimiter #\Newline) (extra-ws 2) (stream *standard-output*))
-  "prints table 'tbl' with delimiter 'delimiter' to the standard output"
+  "Prints table"
   (macrolet ((write-no-escape (object)
                `(write ,object :stream stream :escape nil)))
     
@@ -62,7 +62,7 @@
 
 
 (defun parse (&key (stream *standard-input*) (row-delimiter #\Newline) (column-delimiter #\;))
-  "Reads table from the stream. Default stream is *standard-input*"
+  "Reads table"
   (flet ((%list-to-array (list)
            (make-array (length list)
                        :initial-contents list)))
