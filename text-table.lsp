@@ -17,10 +17,10 @@
 
 (defconstant extra-ws 2)
 
-(defun print-table (tbl &key (header-delimiter #\=) (column-delimiter #\|) (row-delimiter #\Newline))
+(defun print-table (tbl &key (header-delimiter #\=) (column-delimiter #\|) (row-delimiter #\Newline) (stream *standard-output*))
   "prints table 'tbl' with delimiter 'delimiter' to the standard output"
   (macrolet ((write-no-escape (object)
-               `(write ,object :escape nil)))
+               `(write ,object :stream stream :escape nil)))
     
     (flet ((%print-row (row lengths)
              (loop 
