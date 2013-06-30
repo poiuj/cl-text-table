@@ -15,9 +15,8 @@
             (error "Row lengths doesn't match!"))
         row-list)))
 
-(defconstant extra-ws 2)
 
-(defun print-table (tbl &key (header-delimiter #\=) (column-delimiter #\|) (row-delimiter #\Newline) (stream *standard-output*))
+(defun print-table (tbl &key (header-delimiter #\=) (column-delimiter #\|) (row-delimiter #\Newline) (extra-ws 2) (stream *standard-output*))
   "prints table 'tbl' with delimiter 'delimiter' to the standard output"
   (macrolet ((write-no-escape (object)
                `(write ,object :stream stream :escape nil)))
