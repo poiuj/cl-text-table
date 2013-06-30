@@ -17,13 +17,14 @@
 
 (defconstant extra-ws 2)
 
-(defun print-table (tbl &optional (delimiter #\|))
+(defun print-table (tbl &key (header-delimiter #\=) (column-delimiter #\|) (row-delimiter #\Newline))
   "prints table 'tbl' with delimiter 'delimiter' to the standard output"
   (macrolet ((write-no-escape (object)
                `(write ,object :escape nil)))
     
     (flet ((%print-row (row lengths)
-             (loop for element across row
+             (loop 
+                for element across row
                 for element-length across lengths do
                   (let* ((avail-ws (- element-length (length element)))
                          (ws-before (round (/ avail-ws extra-ws)))
@@ -31,7 +32,7 @@
                     (loop repeat ws-before do (write-no-escape #\Space))
                     (write-no-escape element)
                     (loop repeat ws-after do (write-no-escape #\Space))
-                    (write-no-escape delimiter))))
+                    (write-no-escape column-delimiter))))
 
            (%find-widest-item (tbl element-number)
              (loop for x in tbl maximize (length (aref x element-number)))))
@@ -47,18 +48,18 @@
               
               ;; print header
               (%print-row header lengths)
-              (write-no-escape #\Newline)
+              (write-no-escape row-delimiter)
               
               ;; print horizontal delimiter
               (let ((total-length (+ (loop for x across lengths sum x)
                                      header-length)))
-                (loop repeat total-length do (write-no-escape #\=)))
-              (write-no-escape #\Newline)
+                (loop repeat total-length do (write-no-escape header-delimiter)))
+              (write-no-escape row-delimiter)
               
               ;; print rest table
               (loop for row in (cdr tbl) do
                    (%print-row row lengths)
-                   (write-no-escape #\Newline))))))))
+                   (write-no-escape row-delimiter))))))))
 
 
 (defun parse-file (file-name &key (row-delimiter #\Newline) (column-delimiter #\;))
