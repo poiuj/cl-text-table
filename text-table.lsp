@@ -61,7 +61,7 @@
                    (write-no-escape #\Newline))))))))
 
 
-(defun parse-file (file-name &optional (row-delimiter #\Newline) (column-delimiter #\;))
+(defun parse-file (file-name &key (row-delimiter #\Newline) (column-delimiter #\;))
   "creates table from text file"
   (flet ((%list-to-array (list)
            (make-array (length list)
