@@ -18,9 +18,11 @@
 ;;;; 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 (defsystem cl-text-table
+  :name "cl-text-table"
   :description "Library for printing text tables"
-  :version "1.0"
-  :author "poiuj"
+  :author "Vadym Khoptynets <vadya.poiuj@gmail.com>"
+  :version "1.0.0"
+  :license "GPLv2"
   :components ((:file "package" :type "lsp")
                (:file "text-table" :type "lsp"
                       :depends-on 
