@@ -17,7 +17,7 @@ first;second;third
 
 Parse input file:
 ```lisp
-(setf my-table (txt-tbl:parse-file "test-table.tdl"))
+(setf my-table (txt-tbl:parse-file "test-table.tbl"))
 ```
 
 After that, we can dump it to file:
