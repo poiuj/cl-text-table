@@ -8,10 +8,12 @@ Example
 =======
 
 For instance, we have input file test-table.tbl:
+```
 first;second;third
 1;2;3
 1;1;2
 3;2;3
+```
 
 Parse input file:
 ```lisp
@@ -25,8 +27,10 @@ After that, we can dump it to file:
 ```
 
 The result is:
+```
  first | second | third |
 =========================
    1   |    2   |   3   |
    1   |    1   |   2   |
    3   |    2   |   3   |
+```
