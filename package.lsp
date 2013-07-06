@@ -1,4 +1,4 @@
 (defpackage text-table
   (:use common-lisp)
   (:nicknames txt-tbl)
-  (:export tbl-append print-table parse parse-file))
+  (:export add-row print-table parse parse-file))

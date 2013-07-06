@@ -3,8 +3,8 @@
 ;; table -> (title row row ... row)
 ;; title, row -> #(element element ... element)
 
-(defun tbl-append (row tbl)
-  "Appends row to the table"
+(defun add-row (row tbl)
+  "Adds row to the table"
   (declare (array row)
            (list tbl))
   
