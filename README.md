@@ -14,12 +14,12 @@ first;second;third
 3;2;3
 
 Parse input file:
-```common lisp
+```lisp
 (setf my-table (txt-tbl:parse-file "test-table.tdl"))
 ```
 
 After that, we can dump it to file:
-```common lisp
+```lisp
 (with-open-file (s "result-table.txt" :direction :output)
     (txt-tbl:print-table my-table :stream s))
 ```
