@@ -1,5 +1,5 @@
 ;;;; text-table package definition
-;;;; Copyright (C) 2013  Vadym Khoptynets <vadya.poiuj@gmail.com>
+;;;; Copyright (C) 2013  Vadym Khoptynets <vadym.khoptynets@gmail.com>
 
 ;;;; This file is part of cl-text-table
 
